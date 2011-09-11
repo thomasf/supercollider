@@ -72,7 +72,6 @@ Pgpar : Ppar {
 		event = inevent.copy;
 		event[\addAction] = 1;
 		event[\type] = \group;
-		event[\delta] = 1e-9; // no other sync choice for now. (~ 1 / 20000 sample delay)
 		event[\id] = ids;
 		event[\group] = ingroup;
 
