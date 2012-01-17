@@ -1,10 +1,14 @@
-find_package(FFTW3f)
-
-if (FFTW3F_FOUND)
-  add_definitions("-DSC_FFT_FFTW")
-  include_directories (${FFTW3F_INCLUDE_DIR})
+if (FFT_GREEN)
+    add_definitions("-DSC_FFT_GREEN")
+elseif (APPLE)
+    add_definitions("-DSC_FFT_VDSP")
 else()
-  message(SEND_ERROR "Cannot find libfftw3f")
+    find_package(FFTW3f 3.3)
+    if (FFTW3F_FOUND)
+        add_definitions("-DSC_FFT_FFTW")
+    else()
+        message(SEND_ERROR "Cannot find libfftw3f")
+    endif()
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX)
@@ -58,6 +62,10 @@ set(libsupernova_src
     server/server.cpp
     server/server_args.cpp
 )
+
+if(FFT_GREEN)
+    list(APPEND libsupernova_src ../../common/fftlib.c)
+endif()
 
 if(COMPACT_BUILD)
   CREATE_FINAL_FILE(libsupernova_final.cpp ${libsupernova_src})
