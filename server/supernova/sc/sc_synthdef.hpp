@@ -34,6 +34,10 @@
 #include "SC_Wire.h"
 
 namespace nova {
+namespace jit
+{
+class UnitJIT;
+}
 
 class sc_synthdef
 {
@@ -119,7 +123,8 @@ public:
     sc_synthdef(sc_synthdef && rhs):
         name_(std::move(rhs.name_)), constants(std::move(rhs.constants)), parameters(std::move(rhs.parameters)),
         parameter_map(std::move(rhs.parameter_map)), graph(std::move(rhs.graph)), buffer_count(rhs.buffer_count),
-        calc_unit_indices(std::move(rhs.calc_unit_indices)), memory_requirement_(rhs.memory_requirement_)
+        calc_unit_indices(std::move(rhs.calc_unit_indices)), memory_requirement_(rhs.memory_requirement_),
+        calc_func(rhs.calc_func)
     {}
 
     sc_synthdef(sc_synthdef const & rhs) = default;
@@ -154,11 +159,20 @@ public:
         return memory_requirement_;
     }
 
+    typedef void (*synthdef_calc_func)(class sc_synth *, struct Unit**);
+    synthdef_calc_func calc_function() const
+    {
+        return calc_func;
+    }
+
 private:
+    friend class jit::UnitJIT;
     void read_synthdef(const char *&, int version);
 
     /** assign buffers, collect memory requirement & cache ugen prototype */
     void prepare(void);
+
+    void JITSynthDef(void);
 
     string name_;
     fvector constants;
@@ -169,6 +183,8 @@ private:
     boost::uint16_t buffer_count;
     calc_units_t calc_unit_indices; /**< indices of the units, that need to be calculated */
     std::size_t memory_requirement_;
+
+    synthdef_calc_func calc_func;
 };
 
 std::vector<sc_synthdef> read_synthdefs(const char * buf_ptr);
