@@ -2554,13 +2554,16 @@ void LPF_next(LPF* unit, int inNumSamples)
 	} else {
 		LOOP(unit->mRate->mFilterLoops,
 			y0 = ZXP(in) + b1 * y1 + b2 * y2;
-			ZXP(out) = a0 * (y0 + 2.f * y1 + y2);
+			float out0 = a0 * (y0 + 2.f * y1 + y2);
 
 			y2 = ZXP(in) + b1 * y0 + b2 * y1;
-			ZXP(out) = a0 * (y2 + 2.f * y0 + y1);
+			float out1 = a0 * (y2 + 2.f * y0 + y1);
 
 			y1 = ZXP(in) + b1 * y2 + b2 * y0;
-			ZXP(out) = a0 * (y1 + 2.f * y2 + y0);
+			float out2 = a0 * (y1 + 2.f * y2 + y0);
+			ZXP(out) = out0;
+			ZXP(out) = out1;
+			ZXP(out) = out2;
 		);
 		LOOP(unit->mRate->mFilterRemain,
 			y0 = ZXP(in) + b1 * y1 + b2 * y2;
