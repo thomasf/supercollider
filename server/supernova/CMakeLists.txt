@@ -1,6 +1,6 @@
 find_package(LLVM)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${LLVM_CFLAGS}")
-
+link_directories(${LLVM_LIBRARY_DIR})
 
 if(NOT APPLE)
     find_package(FFTW3f)
