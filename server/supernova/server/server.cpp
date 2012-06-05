@@ -49,7 +49,7 @@ nova_server::nova_server(server_arguments const & args):
     assert(instance == 0);
     io_interpreter.start_thread();
     instance = this;
-    sc_factory = new sc_ugen_factory;
+    sc_factory = new sc_ugen_factory(4096, audio_thread_count(), args.blocksize);
     sc_factory->initialize(args, server_shared_memory_creator::shm->get_control_busses());
 
 

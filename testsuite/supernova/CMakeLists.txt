@@ -31,7 +31,6 @@ if (CMAKE_SYSTEM_NAME MATCHES "Linux")
     )
 endif()
 
-
 find_package(Sndfile REQUIRED)
 
 include_directories(${CMAKE_SOURCE_DIR}/include/common

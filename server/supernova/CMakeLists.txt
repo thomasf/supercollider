@@ -28,8 +28,6 @@ if(MEMORY_DEBUGGING)
                  PROPERTY COMPILE_DEFINITIONS_DEBUG NOVA_MEMORY_DEBUGGING)
 endif()
 
-
-
 include_directories(${CMAKE_SOURCE_DIR}/external_libraries/boost_endian
                     ${CMAKE_SOURCE_DIR}/external_libraries/oscpack
                     ${CMAKE_SOURCE_DIR}/external_libraries/TLSF-2.4.6/src
@@ -77,10 +75,6 @@ set_property(TARGET libsupernova
              PROPERTY OUTPUT_NAME supernova)
 
 add_executable(supernova server/main.cpp ${supernova_headers})
-
-set_property(TARGET libsupernova supernova
-             APPEND
-             PROPERTY COMPILE_DEFINITIONS SUPERNOVA)
 
 find_library(DL NAMES dl)
 if (DL)

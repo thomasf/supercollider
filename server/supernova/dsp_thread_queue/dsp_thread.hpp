@@ -277,6 +277,11 @@ public:
     }
     /* @} */
 
+    int thread_count(void) const
+    {
+        return interpreter.get_thread_count();
+    }
+
 private:
     /** wake dsp threads */
     void wake_threads(void)
